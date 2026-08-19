@@ -1,10 +1,7 @@
 {
   "artboards": [
-    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1080, "h": 1920, "title": "1. Welkom" },
-    { "file": "Scanning.dc.html", "x": 1240, "y": 0, "w": 1080, "h": 1920, "title": "2. Scannen" },
-    { "file": "Access.dc.html", "x": 2480, "y": 0, "w": 1080, "h": 1920, "title": "3. Toegang verleend" },
-    { "file": "Route.dc.html", "x": 3720, "y": 0, "w": 1080, "h": 1920, "title": "4. Route" },
-    { "file": "Device.dc.html", "x": 4960, "y": 0, "w": 1080, "h": 1920, "title": "Zuil (hardware)" }
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1080, "h": 1920, "title": "Kiosk-flow (tik om verder te gaan)" },
+    { "file": "Device.dc.html", "x": 1240, "y": 0, "w": 1080, "h": 1920, "title": "Zuil (hardware)" }
   ],
-  "launch": { "view": "canvas" }
+  "launch": { "view": "focused", "file": "Main.dc.html" }
 }

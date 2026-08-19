@@ -19,7 +19,7 @@
       font-weight: 800;
       letter-spacing: .07em;
       background-image: radial-gradient(circle, #1a1210 42%, transparent 45%);
-      background-size: 7px 7px;
+      background-size: 6px 6px;
       background-clip: text;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -38,62 +38,280 @@
       0% { opacity: .55; transform: scale(.7); }
       100% { opacity: 0; transform: scale(1.35); }
     }
+    .grain {
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 3px);
+    }
+    .scanline { animation: sweep 2.2s cubic-bezier(.65,0,.35,1) infinite; }
+    @keyframes sweep {
+      0% { top: 6%; opacity: 0; }
+      8% { opacity: 1; }
+      50% { top: 92%; opacity: 1; }
+      58% { opacity: 0; }
+      100% { top: 92%; opacity: 0; }
+    }
+    .fill-bar { animation: fillProgress 2.2s ease-in-out infinite; }
+    @keyframes fillProgress {
+      0% { width: 8%; }
+      70% { width: 92%; }
+      100% { width: 92%; }
+    }
+    .badge-pop { animation: pop .5s cubic-bezier(.34,1.56,.64,1) both; animation-delay: 1.9s; }
+    @keyframes pop { 0% { transform: scale(.6); opacity:0; } 100% { transform: scale(1); opacity:1; } }
+    .check-ring { animation: ringIn .6s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes ringIn { 0% { transform: scale(.5); opacity:0; } 100% { transform: scale(1); opacity:1; } }
+    .check-mark { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw .5s ease-out .35s forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    .barrier-arm { transform-origin: 40px 150px; animation: raise 1s cubic-bezier(.4,0,.2,1) .5s both; }
+    @keyframes raise { from { transform: rotate(0deg); } to { transform: rotate(-78deg); } }
+    .route-dash { stroke-dasharray: 14 10; animation: dashMove 1.6s linear infinite; }
+    @keyframes dashMove { to { stroke-dashoffset: -48; } }
+    .ring-spin { animation: spin 6s linear infinite; transform-origin: 50% 50%; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .tap-hint { animation: hintPulse 1.8s ease-in-out infinite; }
+    @keyframes hintPulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
   </style>
 </helmet>
 
-<div style="--accent:{{accent}}; --accent-dark: color-mix(in oklab, var(--accent) 55%, black); width:1080px; height:1920px; position:relative; overflow:hidden; background: radial-gradient(120% 90% at 50% -8%, var(--accent) 0%, var(--accent-dark) 62%, #1a0607 100%); font-family:'Space Grotesk', sans-serif; color:#fff; display:flex; flex-direction:column;">
+<div
+  onClick="{{advance}}"
+  style="--accent:{{accent}}; --accent-dark: color-mix(in oklab, var(--accent) 55%, black); width:1080px; height:1920px; position:relative; overflow:hidden; background: radial-gradient(120% 90% at 50% -8%, var(--accent) 0%, var(--accent-dark) 62%, #1a0607 100%); font-family:'Space Grotesk', sans-serif; color:#fff; display:flex; flex-direction:column; cursor:pointer; user-select:none;">
 
-  <!-- top brand bar -->
-  <div style="display:flex; align-items:center; justify-content:center; padding:72px 0 0 0;">
-    <div class="brand-dots" style="font-size:52px;">Brightlands</div>
-  </div>
-  <div style="text-align:center; margin-top:14px; font-family:'JetBrains Mono',monospace; font-size:20px; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.65);">Toegangscontrole</div>
-
-  <!-- hero icon -->
-  <div style="flex:0 0 auto; display:flex; align-items:center; justify-content:center; margin-top:96px; position:relative; height:280px;">
-    <div class="scan-wave" style="position:absolute; width:220px; height:220px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
-    <div class="scan-wave d2" style="position:absolute; width:220px; height:220px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
-    <div class="scan-wave d3" style="position:absolute; width:220px; height:220px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
-    <svg width="132" height="132" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="position:relative;">
-      <path d="M3 12l1.8-5.2A2 2 0 0 1 6.7 5.5h10.6a2 2 0 0 1 1.9 1.3L21 12"/>
-      <path d="M3 12v5a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-.86L6.4 15"/>
-      <path d="M21 12v5a1 1 0 0 1-1 1h-1.2a1 1 0 0 1-1-.86L17.6 15"/>
-      <path d="M3 12h18"/>
-      <path d="M6.4 15h11.2"/>
-      <circle cx="7.5" cy="15" r=".6" fill="#ffffff"/>
-      <circle cx="16.5" cy="15" r=".6" fill="#ffffff"/>
-    </svg>
+  <!-- top brand bar, constant across steps -->
+  <div style="display:flex; flex-direction:column; align-items:center; padding:56px 0 0 0; flex:0 0 auto;">
+    <div class="brand-dots" style="font-size:36px;">Brightlands</div>
+    <div style="display:flex; gap:10px; margin-top:22px;">
+      <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+        <div style="width:{{d.size}}; height:{{d.size}}; border-radius:50%; background:{{d.color}};"></div>
+      </sc-for>
+    </div>
   </div>
 
-  <!-- headline -->
-  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; padding:64px 90px 0 90px; text-align:center;">
-    <div style="font-size:88px; font-weight:700; line-height:1.04; letter-spacing:-.01em; text-wrap:pretty;">Rij een stukje<br>naar voren</div>
-    <div style="margin-top:28px; font-size:32px; line-height:1.4; color:rgba(255,255,255,.82); max-width:760px; text-wrap:pretty;">We herkennen uw kenteken automatisch zodra u dichterbij komt.</div>
+  <!-- STEP 0: welkom -->
+  <sc-if value="{{isStep0}}" hint-placeholder-val="{{true}}">
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 90px;">
 
-    <!-- camera-active strip -->
+    <div style="position:relative; height:220px; display:flex; align-items:center; justify-content:center; margin-bottom:64px;">
+      <div class="scan-wave" style="position:absolute; width:200px; height:200px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
+      <div class="scan-wave d2" style="position:absolute; width:200px; height:200px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
+      <div class="scan-wave d3" style="position:absolute; width:200px; height:200px; border-radius:50%; border:2px solid rgba(255,255,255,.5);"></div>
+      <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="position:relative;">
+        <path d="M3 12l1.8-5.2A2 2 0 0 1 6.7 5.5h10.6a2 2 0 0 1 1.9 1.3L21 12"/>
+        <path d="M3 12v5a1 1 0 0 0 1 1h1.2a1 1 0 0 0 1-.86L6.4 15"/>
+        <path d="M21 12v5a1 1 0 0 1-1 1h-1.2a1 1 0 0 1-1-.86L17.6 15"/>
+        <path d="M3 12h18"/>
+        <path d="M6.4 15h11.2"/>
+        <circle cx="7.5" cy="15" r=".6" fill="#ffffff"/>
+        <circle cx="16.5" cy="15" r=".6" fill="#ffffff"/>
+      </svg>
+    </div>
+
+    <div style="font-size:88px; font-weight:700; line-height:1.04; letter-spacing:-.01em; text-wrap:pretty; text-align:center;">Rij een stukje<br>naar voren</div>
+    <div style="margin-top:28px; font-size:32px; line-height:1.4; color:rgba(255,255,255,.82); max-width:760px; text-wrap:pretty; text-align:center;">We herkennen uw kenteken automatisch zodra u dichterbij komt.</div>
+
     <div style="margin-top:88px; width:100%; max-width:780px; border:2px dashed rgba(255,255,255,.4); border-radius:28px; padding:36px 40px; display:flex; align-items:center; gap:28px; background:rgba(0,0,0,.12);">
-      <div style="position:relative; width:22px; height:22px; flex:0 0 auto;">
-        <div class="pulse-dot" style="width:22px; height:22px; border-radius:50%; background:#7CFFAA;"></div>
-      </div>
+      <div class="pulse-dot" style="width:22px; height:22px; border-radius:50%; background:#7CFFAA; flex:0 0 auto;"></div>
       <div style="text-align:left;">
         <div style="font-size:28px; font-weight:600;">Scanner actief</div>
         <div style="font-size:22px; color:rgba(255,255,255,.7); margin-top:4px;">Kenteken wordt zo automatisch herkend</div>
       </div>
     </div>
   </div>
+  </sc-if>
 
-  <!-- footer -->
-  <div style="padding:0 0 56px 0; display:flex; flex-direction:column; align-items:center; gap:10px;">
-    <div style="font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.12em; color:rgba(255,255,255,.5);">POWERED BY 247ACCESS</div>
+  <!-- STEP 1: scannen -->
+  <sc-if value="{{isStep1}}" hint-placeholder-val="{{false}}">
+  <div style="flex:1; display:flex; flex-direction:column; padding:0 72px;">
+    <div style="text-align:center; margin-top:20px;">
+      <div style="font-size:60px; font-weight:700; line-height:1.05; text-wrap:pretty;">Een moment,<br>we scannen uw kenteken</div>
+    </div>
+
+    <div class="grain" style="margin-top:52px; flex:1; border-radius:36px; background: radial-gradient(120% 100% at 50% 20%, #2a2422 0%, #14100f 70%); position:relative; overflow:hidden; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), 0 30px 60px rgba(0,0,0,.35);">
+
+      <svg width="936" height="920" viewBox="0 0 936 920" style="position:absolute; inset:0;">
+        <g stroke="rgba(255,255,255,.25)" stroke-width="2">
+          <path d="M50 60 L50 100 M50 60 L90 60" fill="none"/>
+          <path d="M886 60 L886 100 M886 60 L846 60" fill="none"/>
+          <path d="M50 820 L50 780 M50 820 L90 820" fill="none"/>
+          <path d="M886 820 L886 780 M886 820 L846 820" fill="none"/>
+        </g>
+      </svg>
+
+      <div style="position:absolute; left:50%; top:44%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center;">
+        <div style="position:relative; padding:34px;">
+          <svg width="560" height="260" viewBox="0 0 560 260" style="position:absolute; inset:0;">
+            <g stroke="#7CFFAA" stroke-width="5" stroke-linecap="round" fill="none">
+              <path d="M8 60 V16 H52"/>
+              <path d="M508 16 H552 V60"/>
+              <path d="M552 200 V244 H508"/>
+              <path d="M52 244 H8 V200"/>
+            </g>
+          </svg>
+          <div style="width:492px; height:192px; border-radius:14px; background:#F6C700; display:flex; align-items:stretch; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.5);">
+            <div style="width:56px; background:#0A4FA0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:14px; gap:6px;">
+              <div style="color:#F6C700; font-weight:800; font-size:22px; font-family:'JetBrains Mono',monospace;">NL</div>
+            </div>
+            <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+              <div style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:92px; letter-spacing:.06em; color:#111;">XX-999-X</div>
+            </div>
+          </div>
+        </div>
+        <div class="badge-pop" style="margin-top:34px; display:flex; align-items:center; gap:14px; background:#1c3a2a; border:2px solid #7CFFAA; border-radius:999px; padding:16px 32px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7CFFAA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          <div style="font-size:28px; font-weight:700; color:#7CFFAA;">Perfect — kenteken herkend</div>
+        </div>
+      </div>
+
+      <div class="scanline" style="position:absolute; left:6%; right:6%; height:3px; background:linear-gradient(90deg, transparent, #7CFFAA, transparent); box-shadow:0 0 18px 2px rgba(124,255,170,.7);"></div>
+    </div>
+
+    <div style="margin:40px 0 0 0;">
+      <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:22px; color:rgba(255,255,255,.75); margin-bottom:14px;">
+        <span>KENTEKEN VERIFIËREN</span>
+        <span>247ACCESS</span>
+      </div>
+      <div style="height:14px; border-radius:999px; background:rgba(255,255,255,.15); overflow:hidden;">
+        <div class="fill-bar" style="height:100%; border-radius:999px; background:linear-gradient(90deg,#7CFFAA,#4ADE80);"></div>
+      </div>
+    </div>
+    <div style="height:40px;"></div>
+  </div>
+  </sc-if>
+
+  <!-- STEP 2: toegang verleend -->
+  <sc-if value="{{isStep2}}" hint-placeholder-val="{{false}}">
+  <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
+    <div style="display:flex; align-items:center; justify-content:center; margin-top:56px;">
+      <div class="check-ring" style="width:220px; height:220px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #6BFF9E, #22B458); display:flex; align-items:center; justify-content:center; box-shadow:0 30px 60px rgba(34,180,88,.45);">
+        <svg width="108" height="108" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <path class="check-mark" d="M20 6L9 17l-5-5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:52px; padding:0 90px;">
+      <div style="font-size:92px; font-weight:700; letter-spacing:-.01em;">Welkom, Mike</div>
+      <div style="margin-top:22px; font-size:32px; color:rgba(255,255,255,.85);">Toegang verleend — de slagboom gaat nu open</div>
+    </div>
+
+    <div style="display:flex; justify-content:center; margin-top:40px;">
+      <div style="display:flex; align-items:center; gap:16px; background:rgba(0,0,0,.2); border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:14px 30px;">
+        <div style="width:44px; height:32px; border-radius:5px; background:#F6C700; display:flex; align-items:center; justify-content:center;">
+          <div style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:13px; color:#111;">NL</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:700; font-size:28px;">XX-999-X</div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7CFFAA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+    </div>
+
+    <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+      <svg width="520" height="340" viewBox="0 0 520 360">
+        <line x1="30" y1="330" x2="490" y2="330" stroke="rgba(255,255,255,.25)" stroke-width="3"/>
+        <rect x="20" y="150" width="40" height="180" rx="8" fill="rgba(255,255,255,.14)" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+        <rect x="440" y="220" width="30" height="110" rx="6" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+        <g class="barrier-arm">
+          <rect x="40" y="140" width="330" height="20" rx="10" fill="#fff"/>
+          <rect x="40" y="140" width="42" height="20" fill="#c8203c"/>
+          <rect x="118" y="140" width="42" height="20" fill="#c8203c"/>
+          <rect x="196" y="140" width="42" height="20" fill="#c8203c"/>
+          <rect x="274" y="140" width="42" height="20" fill="#c8203c"/>
+          <circle cx="40" cy="150" r="14" fill="#e7e7e7" stroke="rgba(0,0,0,.15)"/>
+        </g>
+        <text x="160" y="358" font-family="JetBrains Mono, monospace" font-size="20" letter-spacing="2" fill="rgba(255,255,255,.55)">SLAGBOOM OPEN</text>
+      </svg>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- STEP 3: route -->
+  <sc-if value="{{isStep3}}" hint-placeholder-val="{{false}}">
+  <div style="flex:1; display:flex; flex-direction:column; padding:0 72px;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:12px; margin-top:16px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7CFFAA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:20px; letter-spacing:.18em; color:rgba(255,255,255,.65);">TOEGANG VERLEEND</div>
+    </div>
+
+    <div style="text-align:center; margin-top:28px;">
+      <div style="font-size:60px; font-weight:700; line-height:1.06; text-wrap:pretty;">Volg de route<br>naar uw plek</div>
+    </div>
+
+    <div style="margin-top:44px; flex:1; border-radius:36px; background:#221a19; position:relative; overflow:hidden; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), 0 30px 60px rgba(0,0,0,.35);">
+      <svg width="936" height="820" viewBox="0 0 936 880" style="position:absolute; inset:0;">
+        <line x1="300" y1="880" x2="300" y2="640" stroke="rgba(255,255,255,.22)" stroke-width="34"/>
+        <line x1="300" y1="880" x2="300" y2="640" class="route-dash" stroke="#7CFFAA" stroke-width="4"/>
+        <path d="M300 640 C300 520, 380 460, 520 460 S 700 470, 700 360" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="30" stroke-linecap="round"/>
+        <path d="M300 640 C300 520, 380 460, 520 460 S 700 470, 700 360" fill="none" stroke="#7CFFAA" stroke-width="4" class="route-dash" stroke-linecap="round"/>
+        <path d="M520 460 C420 460, 340 420, 300 320" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="18" stroke-linecap="round"/>
+        <path d="M520 460 C420 460, 340 420, 300 320" fill="none" stroke="rgba(124,255,170,.55)" stroke-width="3" stroke-dasharray="4 10" stroke-linecap="round"/>
+        <g>
+          <circle cx="300" cy="700" r="30" fill="#fff"/>
+          <rect x="288" y="686" width="24" height="28" rx="3" fill="#c8203c"/>
+        </g>
+        <g>
+          <circle cx="700" cy="330" r="46" fill="#fff"/>
+          <text x="700" y="348" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="46" fill="#c8203c" text-anchor="middle">P</text>
+        </g>
+        <g>
+          <circle cx="280" cy="280" r="40" fill="#fff"/>
+          <text x="280" y="296" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="36" fill="#c8203c" text-anchor="middle">B</text>
+        </g>
+        <path d="M700 360 l-14 -22 l28 0 z" fill="#7CFFAA"/>
+      </svg>
+      <div style="position:absolute; left:50%; top:78%; transform:translate(-50%,0); font-family:'JetBrains Mono',monospace; font-size:20px; letter-spacing:.1em; color:rgba(255,255,255,.7);">U BENT HIER</div>
+      <div style="position:absolute; left:73%; top:33%; transform:translate(-50%,-140%); font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:rgba(255,255,255,.75); text-align:center;">PARKEREN</div>
+      <div style="position:absolute; left:30%; top:26%; transform:translate(-50%,-150%); font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.08em; color:rgba(255,255,255,.75); text-align:center;">INGANG B</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:18px; margin:32px 0 0 0;">
+      <div style="display:flex; align-items:center; gap:26px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.18); border-radius:24px; padding:24px 32px;">
+        <div style="width:56px; height:56px; border-radius:14px; background:#7CFFAA; display:flex; align-items:center; justify-content:center; flex:0 0 auto;">
+          <span style="font-family:'Space Grotesk',sans-serif; font-weight:800; font-size:26px; color:#123a22;">P</span>
+        </div>
+        <div style="font-size:28px; font-weight:600; text-wrap:pretty;">Parkeer na 200 meter rechts</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:26px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.18); border-radius:24px; padding:24px 32px;">
+        <div style="width:56px; height:56px; border-radius:14px; background:rgba(255,255,255,.16); display:flex; align-items:center; justify-content:center; flex:0 0 auto;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="15" cy="12" r=".8" fill="#fff"/></svg>
+        </div>
+        <div style="font-size:28px; font-weight:600; text-wrap:pretty;">U wordt verwacht bij ingang B</div>
+      </div>
+    </div>
+    <div style="height:24px;"></div>
+  </div>
+  </sc-if>
+
+  <!-- bottom bar, constant -->
+  <div style="flex:0 0 auto; padding:24px 0 48px 0; display:flex; flex-direction:column; align-items:center; gap:12px;">
+    <div class="tap-hint" style="display:flex; align-items:center; gap:12px;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 0 1 6 0v3a3 3 0 0 1-6 0z"/><path d="M9 12V7a3 3 0 0 1 6 0v1"/></svg>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.12em; color:rgba(255,255,255,.75);">{{hint}}</div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:16px; letter-spacing:.12em; color:rgba(255,255,255,.4);">POWERED BY 247ACCESS</div>
   </div>
 </div>
 
 </x-dc>
 <script data-dc-script data-props='{"accent":{"editor":"color","default":"#c8203c","section":"Theme"}}'>
 class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 0 };
+  }
   renderVals() {
+    const step = this.state.step ?? 0;
+    const labels = ['TIK OM DOOR TE GAAN', 'TIK OM DOOR TE GAAN', 'TIK OM DOOR TE GAAN', 'TIK OM OPNIEUW TE BEGINNEN'];
+    const dots = [0, 1, 2, 3].map((i) => ({
+      size: i === step ? '14px' : '10px',
+      color: i === step ? '#ffffff' : 'rgba(255,255,255,.35)'
+    }));
     return {
-      accent: this.props.accent ?? '#c8203c'
+      accent: this.props.accent ?? '#c8203c',
+      isStep0: step === 0,
+      isStep1: step === 1,
+      isStep2: step === 2,
+      isStep3: step === 3,
+      hint: labels[step],
+      dots: dots,
+      advance: () => this.setState({ step: (step + 1) % 4 })
     };
   }
 }
