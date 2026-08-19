@@ -14,17 +14,24 @@
     * { box-sizing: border-box; }
     body { margin: 0; }
     a { color: #ffe3e3; } a:hover { color: #fff; }
-    .brand-dots {
+    .brand-mark {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 800;
-      letter-spacing: .07em;
-      background-image: radial-gradient(circle, #1a1210 42%, transparent 45%);
-      background-size: 6px 6px;
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
+      letter-spacing: .09em;
+      color: #ffffff;
       display: inline-block;
+      text-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+    .brand-dotrow {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+    }
+    .brand-dotrow span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.55);
     }
     .pulse-dot { animation: pulseGlow 1.8s ease-in-out infinite; }
     @keyframes pulseGlow {
@@ -78,7 +85,8 @@
 
   <!-- top brand bar, constant across steps -->
   <div style="display:flex; flex-direction:column; align-items:center; padding:56px 0 0 0; flex:0 0 auto;">
-    <div class="brand-dots" style="font-size:36px;">Brightlands</div>
+    <div class="brand-mark" style="font-size:40px;">Brightlands</div>
+    <div class="brand-dotrow" style="margin-top:10px;"><span></span><span></span><span></span><span></span><span></span></div>
     <div style="display:flex; gap:10px; margin-top:22px;">
       <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
         <div style="width:{{d.size}}; height:{{d.size}}; border-radius:50%; background:{{d.color}};"></div>
@@ -136,9 +144,9 @@
         </g>
       </svg>
 
-      <div style="position:absolute; left:50%; top:44%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center;">
-        <div style="position:relative; padding:34px;">
-          <svg width="560" height="260" viewBox="0 0 560 260" style="position:absolute; inset:0;">
+      <div style="position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center;">
+        <div style="position:relative; width:560px; height:260px;">
+          <svg width="560" height="260" viewBox="0 0 560 260" style="position:absolute; left:0; top:0; display:block;">
             <g stroke="#7CFFAA" stroke-width="5" stroke-linecap="round" fill="none">
               <path d="M8 60 V16 H52"/>
               <path d="M508 16 H552 V60"/>
@@ -146,12 +154,12 @@
               <path d="M52 244 H8 V200"/>
             </g>
           </svg>
-          <div style="width:492px; height:192px; border-radius:14px; background:#F6C700; display:flex; align-items:stretch; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.5);">
-            <div style="width:56px; background:#0A4FA0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:14px; gap:6px;">
+          <div style="position:absolute; left:34px; top:34px; width:492px; height:192px; border-radius:14px; background:#F6C700; display:flex; align-items:stretch; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.5);">
+            <div style="width:56px; flex:0 0 56px; background:#0A4FA0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:14px; gap:6px;">
               <div style="color:#F6C700; font-weight:800; font-size:22px; font-family:'JetBrains Mono',monospace;">NL</div>
             </div>
             <div style="flex:1; display:flex; align-items:center; justify-content:center;">
-              <div style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:92px; letter-spacing:.06em; color:#111;">XX-999-X</div>
+              <div style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:92px; letter-spacing:.06em; color:#111; line-height:1;">XX-999-X</div>
             </div>
           </div>
         </div>
@@ -236,6 +244,32 @@
 
     <div style="margin-top:44px; flex:1; border-radius:36px; background:#221a19; position:relative; overflow:hidden; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), 0 30px 60px rgba(0,0,0,.35);">
       <svg width="936" height="820" viewBox="0 0 936 880" style="position:absolute; inset:0;">
+        <!-- campus buildings, isometric, drawn behind the route -->
+        <g opacity=".9">
+          <polygon points="70,760 160,760 160,650 70,650" fill="#3a2620"/>
+          <polygon points="70,650 160,650 182,636 92,636" fill="#6b4a3d"/>
+          <polygon points="160,760 160,650 182,636 182,746" fill="#241512"/>
+
+          <polygon points="800,260 900,260 900,130 800,130" fill="#3a2620"/>
+          <polygon points="800,130 900,130 924,114 824,114" fill="#6b4a3d"/>
+          <polygon points="900,260 900,130 924,114 924,244" fill="#241512"/>
+          <rect x="818" y="150" width="16" height="16" fill="rgba(255,214,140,.5)"/>
+          <rect x="850" y="150" width="16" height="16" fill="rgba(255,214,140,.5)"/>
+          <rect x="818" y="190" width="16" height="16" fill="rgba(255,214,140,.35)"/>
+
+          <polygon points="60,470 130,470 130,380 60,380" fill="#3a2620"/>
+          <polygon points="60,380 130,380 148,368 78,368" fill="#6b4a3d"/>
+          <polygon points="130,470 130,380 148,368 148,458" fill="#241512"/>
+
+          <polygon points="760,780 850,780 850,700 760,700" fill="#3a2620"/>
+          <polygon points="760,700 850,700 870,687 780,687" fill="#6b4a3d"/>
+          <polygon points="850,780 850,700 870,687 870,767" fill="#241512"/>
+
+          <polygon points="560,180 620,180 620,110 560,110" fill="#3a2620"/>
+          <polygon points="560,110 620,110 636,100 576,100" fill="#6b4a3d"/>
+          <polygon points="620,180 620,110 636,100 636,170" fill="#241512"/>
+        </g>
+
         <line x1="300" y1="880" x2="300" y2="640" stroke="rgba(255,255,255,.22)" stroke-width="34"/>
         <line x1="300" y1="880" x2="300" y2="640" class="route-dash" stroke="#7CFFAA" stroke-width="4"/>
         <path d="M300 640 C300 520, 380 460, 520 460 S 700 470, 700 360" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="30" stroke-linecap="round"/>
