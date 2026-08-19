@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: #ffe3e3; } a:hover { color: #fff; }
+    .brand-dots {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      letter-spacing: .07em;
+      background-image: radial-gradient(circle, #1a1210 42%, transparent 45%);
+      background-size: 6px 6px;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      display: inline-block;
+    }
+    .grain {
+      background-image: repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 3px);
+    }
+    .scanline {
+      animation: sweep 2.2s cubic-bezier(.65,0,.35,1) infinite;
+    }
+    @keyframes sweep {
+      0% { top: 6%; opacity: 0; }
+      8% { opacity: 1; }
+      50% { top: 92%; opacity: 1; }
+      58% { opacity: 0; }
+      100% { top: 92%; opacity: 0; }
+    }
+    .fill-bar { animation: fillProgress 2.2s ease-in-out infinite; }
+    @keyframes fillProgress {
+      0% { width: 8%; }
+      70% { width: 92%; }
+      100% { width: 92%; }
+    }
+    .badge-pop { animation: pop .5s cubic-bezier(.34,1.56,.64,1) both; animation-delay: 1.9s; }
+    @keyframes pop { 0% { transform: scale(.6); opacity:0; } 100% { transform: scale(1); opacity:1; } }
+  </style>
+</helmet>
+
+<div style="--accent:{{accent}}; --accent-dark: color-mix(in oklab, var(--accent) 55%, black); width:1080px; height:1920px; position:relative; overflow:hidden; background: radial-gradient(120% 90% at 50% -8%, var(--accent) 0%, var(--accent-dark) 62%, #1a0607 100%); font-family:'Space Grotesk', sans-serif; color:#fff; display:flex; flex-direction:column;">
+
+  <div style="display:flex; align-items:center; justify-content:center; padding:64px 0 0 0;">
+    <div class="brand-dots" style="font-size:38px;">Brightlands</div>
+  </div>
+
+  <div style="text-align:center; margin-top:44px; padding:0 90px;">
+    <div style="font-size:64px; font-weight:700; line-height:1.05; text-wrap:pretty;">Een moment,<br>we scannen uw kenteken</div>
+  </div>
+
+  <!-- camera panel -->
+  <div class="grain" style="margin:64px 72px 0 72px; height:920px; border-radius:36px; background: radial-gradient(120% 100% at 50% 20%, #2a2422 0%, #14100f 70%); position:relative; overflow:hidden; box-shadow: inset 0 0 0 2px rgba(255,255,255,.08), 0 30px 60px rgba(0,0,0,.35);">
+
+    <!-- corner reticles -->
+    <svg width="1080" height="920" viewBox="0 0 1080 920" style="position:absolute; inset:0;">
+      <g stroke="rgba(255,255,255,.25)" stroke-width="2">
+        <path d="M60 60 L60 100 M60 60 L100 60" fill="none"/>
+        <path d="M1020 60 L1020 100 M1020 60 L980 60" fill="none"/>
+        <path d="M60 860 L60 820 M60 860 L100 860" fill="none"/>
+        <path d="M1020 860 L1020 820 M1020 860 L980 860" fill="none"/>
+      </g>
+    </svg>
+
+    <!-- plate + bracket, centered -->
+    <div style="position:absolute; left:50%; top:54%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center;">
+
+      <div style="position:relative; padding:34px;">
+        <!-- scan brackets -->
+        <svg width="560" height="260" viewBox="0 0 560 260" style="position:absolute; inset:0;">
+          <g stroke="#7CFFAA" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M8 60 V16 H52"/>
+            <path d="M508 16 H552 V60"/>
+            <path d="M552 200 V244 H508"/>
+            <path d="M52 244 H8 V200"/>
+          </g>
+        </svg>
+
+        <!-- NL plate -->
+        <div style="width:492px; height:192px; border-radius:14px; background:#F6C700; display:flex; align-items:stretch; overflow:hidden; box-shadow:0 18px 40px rgba(0,0,0,.5);">
+          <div style="width:56px; background:#0A4FA0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:14px; gap:6px;">
+            <div style="color:#F6C700; font-weight:800; font-size:22px; font-family:'JetBrains Mono',monospace;">NL</div>
+          </div>
+          <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+            <div style="font-family:'JetBrains Mono',monospace; font-weight:800; font-size:92px; letter-spacing:.06em; color:#111;">XX-999-X</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- perfect badge -->
+      <div class="badge-pop" style="margin-top:34px; display:flex; align-items:center; gap:14px; background:#1c3a2a; border:2px solid #7CFFAA; border-radius:999px; padding:16px 32px;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7CFFAA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <div style="font-size:28px; font-weight:700; color:#7CFFAA;">Perfect — kenteken herkend</div>
+      </div>
+    </div>
+
+    <!-- sweeping scanline -->
+    <div class="scanline" style="position:absolute; left:6%; right:6%; height:3px; background:linear-gradient(90deg, transparent, #7CFFAA, transparent); box-shadow:0 0 18px 2px rgba(124,255,170,.7);"></div>
+  </div>
+
+  <!-- progress -->
+  <div style="margin:56px 90px 0 90px;">
+    <div style="display:flex; justify-content:space-between; font-family:'JetBrains Mono',monospace; font-size:22px; color:rgba(255,255,255,.75); margin-bottom:14px;">
+      <span>KENTEKEN VERIFIËREN</span>
+      <span>247ACCESS</span>
+    </div>
+    <div style="height:14px; border-radius:999px; background:rgba(255,255,255,.15); overflow:hidden;">
+      <div class="fill-bar" style="height:100%; border-radius:999px; background:linear-gradient(90deg,#7CFFAA,#4ADE80);"></div>
+    </div>
+  </div>
+
+  <div style="flex:1;"></div>
+  <div style="padding:0 0 56px 0; display:flex; justify-content:center;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:18px; letter-spacing:.12em; color:rgba(255,255,255,.5);">NIET WEGRIJDEN</div>
+  </div>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{"accent":{"editor":"color","default":"#c8203c","section":"Theme"}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#c8203c'
+    };
+  }
+}
+</script>
+</body>
+</html>
